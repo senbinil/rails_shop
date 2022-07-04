@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   # root "articles#index"
   root "pages#index"
   get "/cart", to: "pages#cart", as: :cart
+  get "/orders",to: "orders#index", as: :orders
   get "/order",to: "pages#place_order",as: :order
+  get  "/order/:order_id",to: "orders#show",as: :show_order
   get "/:id", to: "pages#show", as: :product
   get "/buy-now/:id",to: "pages#buy_now",as: :buy_now
   get "/add/:product_id", to: "pages#add_product", as: :add_product

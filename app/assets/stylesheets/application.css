@@ -55,6 +55,35 @@ header {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.rounded{
+  border-radius: 4px;
+}
+.bg-danger{
+  background-color: #FF0063 ;
+  color:white
+}
+.p-2{
+  padding: 10px;
+}
+.fs-5{
+  font-size: large;
+}
+.my-4{
+  margin: 40px 0;
+}
+.mt-4{
+  margin-top: 40px;
+}
+.mx-1{
+  margin: 0 10px;
+}
+.bg-secondary{
+  background-color: grey;
+  color: white;
+}
+.fs-4{
+  font-size: x-large;
+}
 .my-50 {
   margin: 50px 0px;
 }

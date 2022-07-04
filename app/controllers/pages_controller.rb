@@ -38,16 +38,19 @@ class PagesController < ApplicationController
   def cart
     get_cart = create_cart 
     @cart_total = 0
+    return if get_cart.nil?
     @cart = Cart.find(get_cart.cart_id).carts_products.all
-    if @cart.empty?
-      return Cart.destroy(get_cart.cart_id)
-    end
+    # if @cart.empty?
+    #   return Cart.destroy(get_cart.cart_id)
+    # end
     @product_list=get_cart.products
     @products = {}
     @cart.each do |item|
       @products[item.product_id] = @product_list.select{|x|x  if x.product_id==item.product_id}
       @cart_total += (item.product_quantity) * @products[item.product_id].first.product_price
     end
+    get_cart.cart_total=@cart_total
+     get_cart.save
   end
 
 
@@ -60,9 +63,9 @@ class PagesController < ApplicationController
   def place_order
     @order_place=false
     get_cart=create_cart
-    if Cart.delete(get_cart.cart_id)
-      @order_place=true
-    end
+    get_cart.processed=true
+    get_cart.save
+    Order.create(cart_id:get_cart.cart_id,order_total:get_cart.cart_total,order_tax: get_tax(get_cart.cart_total))
     redirect_to cart_path
   end
   
@@ -70,10 +73,14 @@ class PagesController < ApplicationController
 
   def create_cart flag=false
     if Cart.count != 0 && !flag
-      return (@cart = Cart.last)
+      return Cart.find_by(processed:false)
     end
     @cart = Cart.new
     @cart.save
     @cart = Cart.last
+  end
+
+  def get_tax amount
+    return (amount*1.05)-amount
   end
 end
